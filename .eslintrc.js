@@ -11,6 +11,7 @@ module.exports = {
   ],
   plugins: ['prettier', '@typescript-eslint'],
   rules: {
+    'no-debugger': 'off',
     'prettier/prettier': [
       'error',
       {

@@ -19,8 +19,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
-    "outDir": "./dist",
-    "typeRoots": ["./node_modules/@types", "types"]
+    "outDir": "./dist",    
+    "typeRoots": ["./node_modules/@types", "types"],    
   },
   "include": [
     // "./src/**/*",

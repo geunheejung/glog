@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import validator from 'email-validator';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import useInput from 'hooks/useInput';
 import './styles.css';
 
 interface Props {
@@ -10,8 +11,11 @@ interface Props {
 }
 
 const Login: React.VFC<Props> = ({ isOpen = true }) => {
-  const [id, setId] = useState('');
+  const [id, setId, handleId] = useInput();
+  const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
+
+  console.log(id);
 
   const validateId = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
@@ -19,29 +23,23 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
     }
 
     setIsValidated(true);
+    return true;
   }, [id]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      validateId();
+      const _isValidated = validateId();
 
-      if (!isValidated) return;
+      if (!_isValidated) return;
 
-      console.log(1);
-
-      axios.post('localhost:3095/login', {}).then(res => {
+      axios.post('/login', { id, pw: 'aaaa' }).then(res => {
         console.log(res);
       });
     },
     [id]
   );
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setId(e.target.value);
-    },
-    [id]
-  );
+
   return (
     <Modal isOpen={isOpen} className="access-modal">
       <article className="left-block"></article>
@@ -68,7 +66,13 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
               type="text"
               placeholder="이메일을 입력하세요."
               value={id}
-              onChange={handleChange}
+              onChange={handleId}
+            />
+            <input
+              type="text"
+              placeholder="비밀번호를 입력하세요."
+              value={pw}
+              onChange={handlePw}
             />
             <button>로그인</button>
           </form>

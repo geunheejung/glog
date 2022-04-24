@@ -41,12 +41,14 @@
 }
 
 .access-modal article .content form {
-  display: flex;
+  display: flex;  
   height: 3rem;
+  flex-direction: column;
   width: 100%;
 }
 
 .access-modal article .content form input { 
+  margin: 0 0 1rem 0;
   color: var(--text1);
   flex: 1 1 0%;
   padding: 1rem;
@@ -57,10 +59,10 @@
   border-bottom-left-radius: 2px;
   font-size: 1rem;
   border: 1px solid var(--border3);
-  border-right: none;
  }
 
  .access-modal article .content form button { 
+  align-self: flex-end;
   background: var(--primary1);
   color: var(--button-text);
   font-size: 1rem;
@@ -69,7 +71,8 @@
   border: none;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-  width: 6rem;
+  width: 8rem;
+  padding: 1rem 0;  
   word-break: keep-all;
   cursor: pointer;
  }
