@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import useInput from 'hooks/useInput';
 import './styles.css';
+import { login, QueryKey } from 'api/sign';
+import { Query, useQuery } from 'react-query';
 
 interface Props {
   isOpen: boolean;
@@ -14,8 +16,6 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
   const [id, setId, handleId] = useInput();
   const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
-
-  console.log(id);
 
   const validateId = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
@@ -33,11 +33,15 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
 
       if (!_isValidated) return;
 
-      axios.post('/login', { id, pw: 'aaaa' }).then(res => {
-        console.log(res);
-      });
+      login({ id, pw })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    [id]
+    [id, pw]
   );
 
   return (
