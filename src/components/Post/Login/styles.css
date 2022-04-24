@@ -1,0 +1,75 @@
+.access-modal {
+  width: 606px;
+  height: 480px;  
+  box-shadow: rgb(0 0 0 / 9%) 0px 2px 12px 0px;
+  display: flex;
+  background: #fff;
+  position: fixed;  
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;  
+}
+
+.access-modal article {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.access-modal .left-block { flex: 1; }
+.access-modal .right-block { flex: 2; }
+
+.access-modal article .exit-wrap {
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+  color: #868E96;
+  margin-bottom: 2.25rem;
+}
+
+.access-modal article .content h2 {
+  font-size: 1.3125rem;
+  color: var(--text1);
+}
+
+.access-modal article .content h4 {
+  margin: 1.3rem 0;  
+  color: var(--text3);
+}
+
+.access-modal article .content form {
+  display: flex;
+  height: 3rem;
+  width: 100%;
+}
+
+.access-modal article .content form input { 
+  color: var(--text1);
+  flex: 1 1 0%;
+  padding: 1rem;
+  background: var(--bg-element1);
+  border-right: none;
+  outline: none;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  font-size: 1rem;
+  border: 1px solid var(--border3);
+  border-right: none;
+ }
+
+ .access-modal article .content form button { 
+  background: var(--primary1);
+  color: var(--button-text);
+  font-size: 1rem;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  width: 6rem;
+  word-break: keep-all;
+  cursor: pointer;
+ }

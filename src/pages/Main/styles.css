@@ -1,0 +1,10 @@
+.post-wrap {
+  display: flex;  
+  margin: 0 auto;
+}
+
+.post-wrap main {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1rem;
+}

@@ -1,0 +1,70 @@
+.header {
+  height: 4rem;
+}
+
+.header .content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header .content .menu {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.menu .theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 0.25rem;
+  color: white;
+  position: relative;
+}
+
+.menu .theme-toggle > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+}
+
+.menu .search {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  outline: none;
+  border-radius: 50%;
+  color: #212529;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.menu .login {
+  height: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    word-break: keep-all;
+    background: #212529;
+    color: #fff;
+    transition: all 0.125s ease-in 0s;
+    cursor: pointer;
+}
