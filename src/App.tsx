@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Routes, Route } from 'react-router-dom';
 import Main from 'pages/Main';
 import Header from 'layouts/Header';
 import './reset.css';
 import './styles.css';
+import Login from 'components/Post/Login';
 
 const queryClient = new QueryClient();
 

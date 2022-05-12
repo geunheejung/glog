@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import Modal from 'react-modal';
+import axios from 'axios';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import axios from 'axios';
 
 const rootNode = document.getElementById('root');
 
@@ -18,3 +19,5 @@ createRoot(rootNode).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+Modal.setAppElement('#root');

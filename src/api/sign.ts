@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+
+export const enum StorageKey {
+  AccessToken = 'accessToken',
+  RefreshToken = 'refreshToken',
+}
 
 export const enum QueryKey {
   Login = 'login',
@@ -31,4 +35,10 @@ export const login = (payload: ILogin) => {
 
 export const user = (id: string) => {
   return axios.get<IUser>(`${ApiKey.User}/${id}`).then(res => res);
+};
+
+export const storageItem = (key: Partial<StorageKey>, value?: string) => {
+  if (!value) return window.localStorage.getItem(key);
+
+  window.localStorage.setItem(key, value);
 };

@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import Login from 'components/Post/Login';
 import './styles.css';
+import { useQuery } from 'react-query';
+import { QueryKey, storageItem, StorageKey } from 'api/sign';
 
 const Header: React.VFC = () => {
+  const { data } = useQuery(QueryKey.User);
+  const accessToken = storageItem(StorageKey.AccessToken);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  console.log('data', data);
+
   return (
     <header className="header">
       <div className="content">
@@ -31,9 +44,12 @@ const Header: React.VFC = () => {
               ></path>
             </svg>
           </a>
-          <button className="login">로그인</button>
+          <button className="login" onClick={toggleModal}>
+            로그인
+          </button>
         </div>
       </div>
+      <Login isOpen={isOpen} toggleModal={toggleModal} />
     </header>
   );
 };

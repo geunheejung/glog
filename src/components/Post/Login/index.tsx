@@ -5,22 +5,21 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import useInput from 'hooks/useInput';
 import './styles.css';
-import { login, QueryKey, user } from 'api/sign';
-import { Query, useQuery } from 'react-query';
-
+import { login, QueryKey, storageItem, StorageKey, user } from 'api/sign';
+import { useQuery } from 'react-query';
 interface Props {
   isOpen: boolean;
+  toggleModal: () => void;
 }
 
-const Login: React.VFC<Props> = ({ isOpen = true }) => {
+const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
   const [id, setId, handleId] = useInput();
   const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
   const [userId, setUserId] = useState('');
+  const accessToken = storageItem(StorageKey.AccessToken);
 
-  const { data: userData } = useQuery(QueryKey.User, () => user(userId), {
-    enabled: !!userId,
-  });
+  useQuery(QueryKey.User, () => user(userId), { enabled: !!accessToken });
 
   const validateId = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
@@ -46,7 +45,12 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
             `Authorization`
           ] = `Bearer ${accessToken}`;
 
+          storageItem(StorageKey.AccessToken, accessToken);
+          storageItem(StorageKey.RefreshToken, refreshToken);
+
           setUserId(userId);
+
+          toggleModal();
         })
         .catch(err => {
           console.log(err);
@@ -55,14 +59,17 @@ const Login: React.VFC<Props> = ({ isOpen = true }) => {
     [id, pw]
   );
 
-  console.log(userData);
-
   return (
-    <Modal isOpen={isOpen} className="access-modal">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={toggleModal}
+      className="access-modal"
+    >
       <article className="left-block"></article>
       <article className="right-block">
         <div className="exit-wrap">
           <svg
+            onClick={toggleModal}
             stroke="currentColor"
             fill="currentColor"
             strokeWidth="0"
