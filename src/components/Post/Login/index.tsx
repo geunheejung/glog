@@ -16,10 +16,6 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
   const [id, setId, handleId] = useInput();
   const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
-  const [userId, setUserId] = useState('');
-  const accessToken = storageItem(StorageKey.AccessToken);
-
-  useQuery(QueryKey.User, () => user(userId), { enabled: !!accessToken });
 
   const validateId = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
@@ -41,14 +37,11 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
         .then(res => {
           const { accessToken, refreshToken, userId } = res.data;
 
-          axios.defaults.headers.common[
-            `Authorization`
-          ] = `Bearer ${accessToken}`;
+          const ms = new Date().getTime() + 12000;
 
-          storageItem(StorageKey.AccessToken, accessToken);
-          storageItem(StorageKey.RefreshToken, refreshToken);
-
-          setUserId(userId);
+          storageItem(StorageKey.AccessToken, accessToken, ms);
+          storageItem(StorageKey.RefreshToken, refreshToken, ms);
+          storageItem(StorageKey.UserId, userId, ms);
 
           toggleModal();
         })

@@ -1,19 +1,23 @@
 import React, { useCallback, useState } from 'react';
 import Login from 'components/Post/Login';
 import './styles.css';
-import { useQuery } from 'react-query';
-import { QueryKey, storageItem, StorageKey } from 'api/sign';
+import { useMutation, useQuery } from 'react-query';
+import { QueryKey, storageItem, StorageKey, user } from 'api/sign';
 
 const Header: React.VFC = () => {
-  const { data } = useQuery(QueryKey.User);
-  const accessToken = storageItem(StorageKey.AccessToken);
+  const { value } = storageItem(StorageKey.UserId);
+
+  const { data } = useQuery(QueryKey.User, () => user(value), {
+    enabled: !!value,
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
 
-  console.log('data', data);
+  const ninkname = data?.data.nickname;
 
   return (
     <header className="header">
@@ -44,9 +48,13 @@ const Header: React.VFC = () => {
               ></path>
             </svg>
           </a>
-          <button className="login" onClick={toggleModal}>
-            로그인
-          </button>
+          {ninkname ? (
+            <span>{ninkname}</span>
+          ) : (
+            <button className="login" onClick={toggleModal}>
+              로그인
+            </button>
+          )}
         </div>
       </div>
       <Login isOpen={isOpen} toggleModal={toggleModal} />

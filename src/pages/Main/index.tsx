@@ -1,8 +1,6 @@
 import React from 'react';
 import Post from 'components/Post';
 import './styles.css';
-import Login from 'components/Post/Login';
-import { storageItem, StorageKey } from 'api/sign';
 
 const row = {
   title: '📌 웹과 HTML&CSS에서 놓치기 쉬운 개념들',
@@ -18,8 +16,6 @@ const row = {
 const mock = Array(10).fill(row);
 
 const Main: React.VFC = () => {
-  const accessToken = storageItem(StorageKey.AccessToken);
-
   return (
     <div className="post-wrap">
       <main>

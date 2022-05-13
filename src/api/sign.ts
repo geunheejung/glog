@@ -3,6 +3,7 @@ import axios from 'axios';
 export const enum StorageKey {
   AccessToken = 'accessToken',
   RefreshToken = 'refreshToken',
+  UserId = 'userId',
 }
 
 export const enum QueryKey {
@@ -27,6 +28,7 @@ interface ILogin {
 
 interface IUser {
   id: string;
+  nickname: string;
 }
 
 export const login = (payload: ILogin) => {
@@ -34,11 +36,22 @@ export const login = (payload: ILogin) => {
 };
 
 export const user = (id: string) => {
-  return axios.get<IUser>(`${ApiKey.User}/${id}`).then(res => res);
+  const { value } = storageItem(StorageKey.AccessToken);
+  axios.defaults.headers.common[`Authorization`] = `Bearer ${value}`;
+  return axios.get<IUser>(`${ApiKey.User}/${id}`);
 };
 
-export const storageItem = (key: Partial<StorageKey>, value?: string) => {
-  if (!value) return window.localStorage.getItem(key);
+export const storageItem = (
+  key: Partial<StorageKey>,
+  value?: string,
+  ms?: number
+) => {
+  if (!value) return JSON.parse(localStorage.getItem(key) as string);
 
-  window.localStorage.setItem(key, value);
+  const item = {
+    value,
+    expiry: ms,
+  };
+
+  window.localStorage.setItem(key, JSON.stringify(item));
 };
