@@ -17,7 +17,7 @@ const mock = Array(10).fill(row);
 
 const Main: React.VFC = () => {
   return (
-    <div className="post-wrap">
+    <div className="post-wrap r-grid">
       <main>
         {mock.map((row, index) => (
           <Post

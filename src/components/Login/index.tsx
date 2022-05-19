@@ -1,12 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import validator from 'email-validator';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 import useInput from 'hooks/useInput';
+import { useLogin } from 'hooks/useAuth';
 import './styles.css';
-import { login, QueryKey, storageItem, StorageKey, user } from 'api/sign';
-import { useQuery } from 'react-query';
+
 interface Props {
   isOpen: boolean;
   toggleModal: () => void;
@@ -16,6 +14,18 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
   const [id, setId, handleId] = useInput();
   const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setPw('');
+    };
+  }, [isOpen]);
+
+  const success = () => {
+    toggleModal();
+  };
+
+  const loginMutate = useLogin(success);
 
   const validateId = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
@@ -32,32 +42,13 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
       const _isValidated = validateId();
 
       if (!_isValidated) return;
-
-      login({ id, pw })
-        .then(res => {
-          const { accessToken, refreshToken, userId } = res.data;
-
-          const ms = new Date().getTime() + 12000;
-
-          storageItem(StorageKey.AccessToken, accessToken, ms);
-          storageItem(StorageKey.RefreshToken, refreshToken, ms);
-          storageItem(StorageKey.UserId, userId, ms);
-
-          toggleModal();
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      loginMutate({ id, pw });
     },
     [id, pw]
   );
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={toggleModal}
-      className="access-modal"
-    >
+    <Modal isOpen={isOpen} className="access-modal">
       <article className="left-block"></article>
       <article className="right-block">
         <div className="exit-wrap">

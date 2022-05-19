@@ -1,26 +1,26 @@
 import React, { useCallback, useState } from 'react';
-import Login from 'components/Post/Login';
+import useUser from 'hooks/useUser';
+import Login from 'components/Login';
+import MyMenu from 'components/MyMenu';
 import './styles.css';
-import { useMutation, useQuery } from 'react-query';
-import { QueryKey, storageItem, StorageKey, user } from 'api/sign';
 
 const Header: React.VFC = () => {
-  const { value } = storageItem(StorageKey.UserId);
-
-  const { data } = useQuery(QueryKey.User, () => user(value), {
-    enabled: !!value,
-  });
-
+  const { data } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleModal = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
 
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(!isMenuOpen);
+  }, [isMenuOpen]);
+
   const ninkname = data?.data.nickname;
 
   return (
-    <header className="header">
+    <header className="header r-grid">
       <div className="content">
         <div className="logo">
           <a href="/">Log</a>
@@ -49,7 +49,20 @@ const Header: React.VFC = () => {
             </svg>
           </a>
           {ninkname ? (
-            <span>{ninkname}</span>
+            <div onClick={toggleMenu} className="nickname">
+              <span>{ninkname}</span>
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth="0"
+                viewBox="0 0 24 24"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M7 10l5 5 5-5z"></path>
+              </svg>
+            </div>
           ) : (
             <button className="login" onClick={toggleModal}>
               로그인
@@ -58,6 +71,7 @@ const Header: React.VFC = () => {
         </div>
       </div>
       <Login isOpen={isOpen} toggleModal={toggleModal} />
+      <MyMenu isOpen={isMenuOpen} toggleModal={toggleMenu} />
     </header>
   );
 };

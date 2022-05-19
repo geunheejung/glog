@@ -68,3 +68,7 @@
     transition: all 0.125s ease-in 0s;
     cursor: pointer;
 }
+
+.menu .nickname {
+  display: flex;
+}

@@ -2,9 +2,27 @@
   margin: 0 auto;
 }
 
+.r-grid {
+  position: relative;
+  width: 1728px;
+  margin: 0 auto;
+}
+
 @media (max-width: 1919px) {
-  .app {
+  .r-grid {
     width: 1376px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .r-grid {
+    width: 1024px;
+  }
+}
+
+@media (max-width: 1056px) {
+  .r-grid {
+    width: calc(100% - 2rem);
   }
 }
 
