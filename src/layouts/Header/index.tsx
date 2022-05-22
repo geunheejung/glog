@@ -17,7 +17,7 @@ const Header: React.VFC = () => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
 
-  const ninkname = data?.data.nickname;
+  const nickname = data?.data.nickname;
 
   return (
     <header className="header r-grid">
@@ -48,9 +48,9 @@ const Header: React.VFC = () => {
               ></path>
             </svg>
           </a>
-          {ninkname ? (
+          {nickname ? (
             <div onClick={toggleMenu} className="nickname">
-              <span>{ninkname}</span>
+              <span>{nickname}</span>
               <svg
                 stroke="currentColor"
                 fill="currentColor"

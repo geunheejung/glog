@@ -16,8 +16,8 @@ export const useLogin = (success: () => void) => {
       toast.success('로그인');
       success();
     },
-    onError: err => {
-      console.log(err);
+    onError: () => {
+      toast.error('로그인 실패');
     },
   });
 
