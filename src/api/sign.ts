@@ -1,68 +1,74 @@
-import axios from 'axios';
 import { QueryFunctionContext } from 'react-query';
+import Send from './send';
 
-export const enum StorageKey {
+const enum StorageKey {
+  UserId = 'userId',
   AccessToken = 'accessToken',
   RefreshToken = 'refreshToken',
-  UserId = 'userId',
+  Expired = 'expired',
 }
 
-export const enum QueryKey {
+const enum CookieKey {
+  RefreshToken = 'refreshToken',
+}
+
+const enum QueryKey {
   Login = 'login',
   User = 'user',
 }
 
-export const enum ApiKey {
+const enum ApiKey {
   Login = '/login',
   Logout = '/logout',
   User = '/user',
+  Refresh = '/refresh',
 }
 
-export interface IAuth {
+interface IAuth {
   accessToken: string;
   refreshToken: string;
   userId: string;
 }
-export interface ILogin {
+
+interface ILogin {
   id: string;
   pw: string;
 }
 
-export interface IUser {
+interface IUser {
   id: string;
   nickname: string;
 }
 
-export const login = (payload: ILogin) => {
-  return axios.post<IAuth>(ApiKey.Login, payload);
+const login = (payload: ILogin) => {
+  return Send.post<IAuth>(ApiKey.Login, payload);
 };
 
-export const logout = (userId: string) => {
-  return axios.post(ApiKey.Logout, { userId });
+const logout = (userId: string) => {
+  return Send.post(ApiKey.Logout, { userId });
 };
 
-export const user = ({ queryKey }: QueryFunctionContext<string[]>) => {
-  try {
-    const [, id] = queryKey;
-    const { value } = storageItem(StorageKey.AccessToken);
-    axios.defaults.headers.common[`Authorization`] = `Bearer ${value}`;
-    return axios.get<IUser>(`${ApiKey.User}/${id}`);
-  } catch (err) {
-    throw Error('Error');
-  }
+const user = ({ queryKey }: QueryFunctionContext<string[]>) => {
+  const [, id] = queryKey;
+  return Send.get<IUser>(`${ApiKey.User}/${id}`);
 };
 
-export const storageItem = (
-  key: Partial<StorageKey>,
-  value?: string,
-  ms?: number
-) => {
-  if (!value) return JSON.parse(localStorage.getItem(key) as string) || {};
+const storageItem = (key: Partial<StorageKey>, value?: string | number) => {
+  if (!value) return window.localStorage.getItem(key);
 
-  const item = {
-    value,
-    expiry: ms,
-  };
+  window.localStorage.setItem(key, value.toString());
+};
 
-  window.localStorage.setItem(key, JSON.stringify(item));
+export {
+  StorageKey,
+  CookieKey,
+  QueryKey,
+  ApiKey,
+  IAuth,
+  ILogin,
+  IUser,
+  login,
+  logout,
+  user,
+  storageItem,
 };
