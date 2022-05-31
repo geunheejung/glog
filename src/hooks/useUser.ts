@@ -7,9 +7,6 @@ const useUser = () => {
   const query = useQuery([QueryKey.User, userId as string], user, {
     retry: 0,
     enabled: !!userId,
-    onError: () => {
-      toast('error');
-    },
   });
 
   return query;

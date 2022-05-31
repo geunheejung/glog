@@ -5,7 +5,7 @@ import MyMenu from 'components/MyMenu';
 import './styles.css';
 
 const Header: React.VFC = () => {
-  const { data } = useUser();
+  const { data, isError } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -17,7 +17,7 @@ const Header: React.VFC = () => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
 
-  const nickname = data?.data.nickname;
+  const nickname = isError || data?.data.nickname;
 
   return (
     <header className="header r-grid">

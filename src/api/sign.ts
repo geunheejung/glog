@@ -48,9 +48,9 @@ const logout = (userId: string) => {
   return Send.post(ApiKey.Logout, { userId });
 };
 
-const user = ({ queryKey }: QueryFunctionContext<string[]>) => {
+const user = async ({ queryKey }: QueryFunctionContext<string[]>) => {
   const [, id] = queryKey;
-  return Send.get<IUser>(`${ApiKey.User}/${id}`);
+  return await Send.get<IUser>(`${ApiKey.User}/${id}`);
 };
 
 const storageItem = (key: Partial<StorageKey>, value?: string | number) => {
