@@ -1,18 +1,25 @@
 import { useMutation } from 'react-query';
-import { CookieKey, login, logout, storageItem, StorageKey } from 'api/sign';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import Cookies from 'js-cookie';
+import {
+  CookieKey,
+  login,
+  logout,
+  QueryKey,
+  storageItem,
+  StorageKey,
+  updateToken,
+} from 'api/sign';
+import queryClient from 'queryClient';
 
 export const useLogin = (success: () => void) => {
   const { mutate } = useMutation(login, {
     onSuccess: res => {
       const { accessToken, refreshToken, userId } = res.data;
 
-      storageItem(StorageKey.AccessToken, accessToken);
-      storageItem(StorageKey.Expired, moment().add(2, 'hours').valueOf());
+      updateToken(accessToken);
       storageItem(StorageKey.UserId, userId);
-      Cookies.set(CookieKey.RefreshToken, refreshToken, { expires: 7 });
+      Cookies.set(CookieKey.RefreshToken, refreshToken, { expires: 14 });
 
       toast.success('로그인');
       success();
@@ -28,6 +35,9 @@ export const useLogin = (success: () => void) => {
 export const useLogout = () => {
   const { mutate } = useMutation(logout, {
     onSuccess: () => {
+      Cookies.remove(CookieKey.RefreshToken);
+      window.localStorage.clear();
+      queryClient.resetQueries(QueryKey.User);
       toast.success('로그아웃');
     },
   });

@@ -53,6 +53,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-toastify": "^4.1.0",
     "axios": "^0.26.1",
+    "axios-retry": "^3.2.5",
     "email-validator": "^2.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",

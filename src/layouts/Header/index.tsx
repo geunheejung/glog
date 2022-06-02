@@ -5,9 +5,9 @@ import MyMenu from 'components/MyMenu';
 import './styles.css';
 
 const Header: React.VFC = () => {
-  const { data, isError } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data, isError } = useUser();
 
   const toggleModal = useCallback(() => {
     setIsOpen(!isOpen);
@@ -16,6 +16,8 @@ const Header: React.VFC = () => {
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
+
+  console.log('data', data);
 
   const nickname = isError || data?.data.nickname;
 

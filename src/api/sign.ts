@@ -1,3 +1,5 @@
+import axios from 'axios';
+import moment from 'moment';
 import { QueryFunctionContext } from 'react-query';
 import Send from './send';
 
@@ -44,19 +46,32 @@ const login = (payload: ILogin) => {
   return Send.post<IAuth>(ApiKey.Login, payload);
 };
 
-const logout = (userId: string) => {
+const logout = () => {
+  const userId = storageItem(StorageKey.UserId);
   return Send.post(ApiKey.Logout, { userId });
 };
 
-const user = async ({ queryKey }: QueryFunctionContext<string[]>) => {
-  const [, id] = queryKey;
-  return await Send.get<IUser>(`${ApiKey.User}/${id}`);
+const user = async () => {
+  const userId = storageItem(StorageKey.UserId);
+
+  if (!userId) return;
+
+  return await Send.get<IUser>(`${ApiKey.User}/${userId}`);
 };
 
-const storageItem = (key: Partial<StorageKey>, value?: string | number) => {
-  if (!value) return window.localStorage.getItem(key);
+const storageItem = (
+  key: Partial<StorageKey>,
+  value?: string | number
+): string => {
+  if (!value) return window.localStorage.getItem(key) as string;
 
   window.localStorage.setItem(key, value.toString());
+  return '';
+};
+
+const updateToken = (accessToken: string) => {
+  storageItem(StorageKey.AccessToken, accessToken);
+  storageItem(StorageKey.Expired, moment().add(1, 'h').valueOf());
 };
 
 export {
@@ -71,4 +86,5 @@ export {
   logout,
   user,
   storageItem,
+  updateToken,
 };

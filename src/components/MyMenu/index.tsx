@@ -1,8 +1,7 @@
 import React from 'react';
-import Cookies from 'js-cookie';
-import { CookieKey, storageItem, StorageKey } from 'api/sign';
 import { useLogout } from 'hooks/useAuth';
 import './styles.css';
+
 interface IProps {
   isOpen: boolean;
   toggleModal: () => void;
@@ -14,13 +13,7 @@ const MyMenu: React.VFC<IProps> = ({ isOpen, toggleModal }) => {
   const logoutMutate = useLogout();
 
   const onLogout = () => {
-    const userId = storageItem(StorageKey.UserId);
-
-    if (!userId) return;
-
-    window.localStorage.clear();
-    Cookies.remove(CookieKey.RefreshToken);
-    logoutMutate(userId);
+    logoutMutate();
     toggleModal();
   };
 
