@@ -42,7 +42,6 @@
 
 .access-modal article .content form {
   display: flex;  
-  height: 3rem;
   flex-direction: column;
   width: 100%;
 }
@@ -75,4 +74,18 @@
   padding: 1rem 0;  
   word-break: keep-all;
   cursor: pointer;
+ }
+
+ .access-modal .sub-content {
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+ }
+
+ .access-modal .sub-content button {
+   border: none;
+   background: none;
+   font-weight: bold;
+   color: var(--primary1);
+   cursor: pointer;
  }

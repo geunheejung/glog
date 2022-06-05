@@ -4,6 +4,7 @@ import validator from 'email-validator';
 import useInput from 'hooks/useInput';
 import { useLogin } from 'hooks/useAuth';
 import './styles.css';
+import { toast } from 'react-toastify';
 
 interface Props {
   isOpen: boolean;
@@ -11,9 +12,29 @@ interface Props {
 }
 
 const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
-  const [id, setId, handleId] = useInput();
+  const FORM_INDEX = {
+    Login: 0,
+    SignUp: 1,
+  };
+
+  const [nickname, , handleNickname] = useInput();
+  const [id, , handleId] = useInput();
   const [pw, setPw, handlePw] = useInput();
   const [isValidated, setIsValidated] = useState(false);
+  const [currentFormIndex, setCurrentFormIndex] = useState(FORM_INDEX.Login);
+
+  const formText = [
+    {
+      title: '로그인',
+      subTitle: '이메일로 로그인',
+      submit: '로그인',
+    },
+    {
+      title: '회원가입',
+      subTitle: '이메일로 회원가입',
+      submit: '회원가입',
+    },
+  ];
 
   useEffect(() => {
     return () => {
@@ -27,29 +48,50 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
 
   const loginMutate = useLogin(success);
 
-  const validateId = useCallback(() => {
+  const validate = useCallback(() => {
     if (id.length <= 0 || !validator.validate(id)) {
-      return;
+      toast.warn('이메일 양식이 잘못됐습니다.');
+      return false;
     }
 
-    setIsValidated(true);
     return true;
   }, [id]);
+
+  const loginFlow = useCallback(() => {
+    loginMutate({ id, pw });
+  }, [id, pw]);
+
+  const signUpFlow = useCallback(() => {
+    console.log(1);
+  }, [id, pw]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const _isValidated = validateId();
 
-      if (!_isValidated) return;
-      loginMutate({ id, pw });
+      const isValidated = validate();
+      setIsValidated(isValidated);
+
+      if (!isValidated) return;
+
+      if (currentFormIndex === FORM_INDEX.Login) loginFlow();
+      else signUpFlow();
     },
     [id, pw]
   );
 
+  const toggleForm = useCallback(() => {
+    const { SignUp, Login } = FORM_INDEX;
+    setCurrentFormIndex(currentFormIndex === Login ? SignUp : Login);
+  }, [currentFormIndex]);
+
+  const { title, subTitle, submit } = formText[currentFormIndex];
+  const { SignUp, Login } = FORM_INDEX;
+  const isEmailValidated = isValidated && currentFormIndex === SignUp;
+
   return (
     <Modal isOpen={isOpen} className="access-modal">
-      <article className="left-block"></article>
+      <article className="left-block" />
       <article className="right-block">
         <div className="exit-wrap">
           <svg
@@ -66,24 +108,38 @@ const Login: React.VFC<Props> = ({ isOpen = false, toggleModal }) => {
           </svg>
         </div>
         <section className="content">
-          <h2>로그인</h2>
+          <h2>{title}</h2>
 
-          <h4>이메일로 로그인</h4>
+          <h4>{subTitle}</h4>
           <form onSubmit={handleSubmit}>
+            {isEmailValidated && (
+              <input
+                type="text"
+                placeholder="이름을 입력하세요"
+                value={nickname}
+                onChange={handleNickname}
+              />
+            )}
             <input
               type="text"
               placeholder="이메일을 입력하세요."
               value={id}
               onChange={handleId}
             />
-            <input
-              type="text"
-              placeholder="비밀번호를 입력하세요."
-              value={pw}
-              onChange={handlePw}
-            />
-            <button>로그인</button>
+            {(currentFormIndex === Login || isEmailValidated) && (
+              <input
+                type="text"
+                placeholder="비밀번호를 입력하세요."
+                value={pw}
+                onChange={handlePw}
+              />
+            )}
+            <button>{submit}</button>
           </form>
+          <p className="sub-content">
+            아직 회원이 아니신가요?{' '}
+            <button onClick={toggleForm}>회원가입</button>
+          </p>
         </section>
       </article>
     </Modal>
