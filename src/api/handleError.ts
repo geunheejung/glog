@@ -1,8 +1,15 @@
-import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 const defaultHandler = () => {
   toast.warn('재시도 해주세요.');
+};
+
+const errorHandler400 = (error: any) => {
+  if (error.data && error.data.message) {
+    toast.warn(error.data.message);
+  } else {
+    toast.warn('잘못된 시도 입니다.');
+  }
 };
 
 const errorHandler401 = () => {
@@ -14,11 +21,12 @@ const errorHandler500 = () => {
 };
 
 interface IHandler {
-  [code: number]: () => void;
+  [code: number]: (error: any) => void;
   default: typeof defaultHandler;
 }
 
 const handlers: IHandler = {
+  '400': errorHandler400,
   '401': errorHandler401,
   '500': errorHandler500,
   default: defaultHandler,
@@ -33,7 +41,7 @@ const handleError = (error: Response) => {
     return;
   }
 
-  handler();
+  handler(error);
 };
 
 export default handleError;

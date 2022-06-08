@@ -16,7 +16,6 @@ import queryClient from 'queryClient';
 export const useSignUp = (success: () => void) => {
   const { mutate } = useMutation(signUp, {
     onSuccess: res => {
-      // 1. 로그인 화면으로 넘긴다.
       success();
       toast.success('회원가입 완료.');
     },
@@ -36,9 +35,6 @@ export const useLogin = (success: () => void) => {
 
       toast.success('로그인');
       success();
-    },
-    onError: () => {
-      toast.error('로그인 실패');
     },
   });
 

@@ -49,6 +49,21 @@ interface IUser {
   nickname: string;
 }
 
+const storageItem = (
+  key: Partial<StorageKey>,
+  value?: string | number
+): string => {
+  if (!value) return window.localStorage.getItem(key) as string;
+
+  window.localStorage.setItem(key, value.toString());
+  return '';
+};
+
+const updateToken = (accessToken: string) => {
+  storageItem(StorageKey.AccessToken, accessToken);
+  storageItem(StorageKey.Expired, moment().add(1, 'h').valueOf());
+};
+
 const signUp = (payload: ISignUp) => {
   return Send.post(ApiKey.SignUp, payload);
 };
@@ -70,23 +85,11 @@ const user = async () => {
   return await Send.get<IUser>(`${ApiKey.User}/${userId}`);
 };
 
-const storageItem = (
-  key: Partial<StorageKey>,
-  value?: string | number
-): string => {
-  if (!value) return window.localStorage.getItem(key) as string;
-
-  window.localStorage.setItem(key, value.toString());
-  return '';
-};
-
-const updateToken = (accessToken: string) => {
-  storageItem(StorageKey.AccessToken, accessToken);
-  storageItem(StorageKey.Expired, moment().add(1, 'h').valueOf());
-};
-
 export {
   signUp,
+  login,
+  logout,
+  user,
   StorageKey,
   CookieKey,
   QueryKey,
@@ -94,9 +97,6 @@ export {
   IAuth,
   ILogin,
   IUser,
-  login,
-  logout,
-  user,
   storageItem,
   updateToken,
 };

@@ -18,7 +18,7 @@ const refreshToken = async () => {
 const responseCatch = async (error: any) => {
   const {
     config,
-    response: { status },
+    response: { status, data },
   } = error;
 
   const originalToken = await storageItem(StorageKey.AccessToken);
@@ -38,7 +38,9 @@ const responseCatch = async (error: any) => {
     return axios(config);
   }
 
-  return Promise.reject(error);
+  throw error;
+
+  // return Promise.reject(error);
 };
 
 export { responseCatch };
