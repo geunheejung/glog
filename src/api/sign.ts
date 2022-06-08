@@ -20,10 +20,17 @@ const enum QueryKey {
 }
 
 const enum ApiKey {
+  SignUp = '/signUp',
   Login = '/login',
   Logout = '/logout',
   User = '/user',
   Refresh = '/refresh',
+}
+
+interface ISignUp {
+  nickname: string;
+  email: string;
+  pw: string;
 }
 
 interface IAuth {
@@ -33,7 +40,7 @@ interface IAuth {
 }
 
 interface ILogin {
-  id: string;
+  email: string;
   pw: string;
 }
 
@@ -41,6 +48,10 @@ interface IUser {
   id: string;
   nickname: string;
 }
+
+const signUp = (payload: ISignUp) => {
+  return Send.post(ApiKey.SignUp, payload);
+};
 
 const login = (payload: ILogin) => {
   return Send.post<IAuth>(ApiKey.Login, payload);
@@ -75,6 +86,7 @@ const updateToken = (accessToken: string) => {
 };
 
 export {
+  signUp,
   StorageKey,
   CookieKey,
   QueryKey,

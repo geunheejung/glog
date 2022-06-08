@@ -6,11 +6,24 @@ import {
   login,
   logout,
   QueryKey,
+  signUp,
   storageItem,
   StorageKey,
   updateToken,
 } from 'api/sign';
 import queryClient from 'queryClient';
+
+export const useSignUp = (success: () => void) => {
+  const { mutate } = useMutation(signUp, {
+    onSuccess: res => {
+      // 1. 로그인 화면으로 넘긴다.
+      success();
+      toast.success('회원가입 완료.');
+    },
+  });
+
+  return mutate;
+};
 
 export const useLogin = (success: () => void) => {
   const { mutate } = useMutation(login, {

@@ -18,7 +18,10 @@
   flex-direction: column;
 }
 
-.access-modal .left-block { flex: 1; }
+.access-modal .left-block { 
+  flex: 1; 
+  background: var(--bg-element2);
+}
 .access-modal .right-block { flex: 2; }
 
 .access-modal article .exit-wrap {

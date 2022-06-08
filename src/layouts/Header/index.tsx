@@ -17,8 +17,6 @@ const Header: React.VFC = () => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
 
-  console.log('data', data);
-
   const nickname = isError || data?.data.nickname;
 
   return (
