@@ -28,6 +28,26 @@
   position: relative;
 }
 
+.menu .write-btn {
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+  outline: none;
+  font-weight: bold;
+  word-break: keep-all;
+  background: var(--bg-element2);
+  border: 1px solid var(--bg-element5);
+  color: var(--bg-element5);
+  transition: all 0.125s ease-in 0s;
+  cursor: pointer;
+}
+
+.menu .write-btn:hover {
+  background: var(--bg-element5);
+  color: var(--button-text);
+}
+
 .menu .theme-toggle > div {
   position: absolute;
   top: 50%;

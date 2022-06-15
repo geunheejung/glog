@@ -2,8 +2,8 @@ import { MutationCache, QueryCache, QueryClient } from 'react-query';
 import handleError from 'api/handleError';
 
 const onError = (err: any) => {
-  queryClient.clear();
-  queryClient.getMutationCache().clear();
+  // queryClient.clear();
+  // queryClient.getMutationCache().clear();
   if ('response' in err) {
     handleError(err.response);
   }

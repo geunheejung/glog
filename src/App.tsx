@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import Main from 'pages/Main';
 import Search from 'pages/Main/Search';
 import Header from 'layouts/Header';
+import Write from 'pages/Main/Write';
 import './styles.css';
 
 const App: React.VFC = () => {
@@ -13,6 +14,7 @@ const App: React.VFC = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/write" element={<Write />} />
       </Routes>
       <ToastContainer />
     </div>

@@ -3,6 +3,7 @@ import useUser from 'hooks/useUser';
 import Login from 'components/Login';
 import MyMenu from 'components/MyMenu';
 import './styles.css';
+import { Link } from 'react-router-dom';
 
 const Header: React.VFC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +39,11 @@ const Header: React.VFC = () => {
               </svg>
             </div>
           </button>
+          {nickname && (
+            <button className="write-btn">
+              <Link to="/write">새 글 작성</Link>
+            </button>
+          )}
           <a href="/search" className="search">
             <svg width="17" height="17" viewBox="0 0 17 17">
               <path
