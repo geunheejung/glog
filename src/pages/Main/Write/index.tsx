@@ -3,6 +3,8 @@ import React, {
   useCallback,
   useState,
   KeyboardEvent,
+  MouseEvent,
+  useRef,
 } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -12,11 +14,13 @@ import Tooltip from 'components/Tooltip';
 import Tag from 'components/Tag';
 
 const Write = () => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [title, , changeTitle] = useInput();
   const [tag, setTag, changeTag] = useInput();
   const [tagList, setTagList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [content, changeContent] =
+  const [areaCursor, setAreaCursor] = useState<number>();
+  const [content, setContent] =
     useState(`A paragraph with *emphasis* and **strong importance**.
 
   > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
@@ -33,7 +37,7 @@ const Write = () => {
 
   const handleTextArea = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
-      changeContent(e.target.value);
+      setContent(e.target.value);
     },
     [content]
   );
@@ -69,6 +73,36 @@ const Write = () => {
     [tag, tagList]
   );
 
+  const handleAreaKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      console.log(e);
+    },
+    [content]
+  );
+
+  const handleHeading = useCallback(
+    (headingNum: number) => {
+      // headingNum 만큼 # 추가해서 content에 추가하기.
+      const headingCount = Array(headingNum).fill('#').join('');
+
+      const { current } = textAreaRef;
+
+      // 1. cursor 위치를 인위적으로 바꾸지 않는 이상 cursor 위치 유지하기.
+      const currentLine =
+        content.lastIndexOf('\n', areaCursor || current?.selectionStart) + 1;
+
+      const pre = content.slice(0, currentLine);
+      const suf = content.slice(currentLine, content.length);
+
+      setContent(`${pre}${headingCount} ${suf.replaceAll(/^(#* )/g, '')}`);
+    },
+    [areaCursor, textAreaRef]
+  );
+
+  const handleAreaClick = useCallback(() => {
+    setAreaCursor(textAreaRef.current?.selectionStart);
+  }, [areaCursor]);
+
   return (
     <div className="write-page">
       <div className="write-wrapper">
@@ -103,32 +137,31 @@ const Write = () => {
           </Tooltip>
         </div>
 
-        <div className="input-wrapper style-btn-wrapper">
-          <button>
-            <div>
-              H<span>1</span>
-            </div>
-          </button>
-          <button>
-            <div>
-              H<span>2</span>
-            </div>
-          </button>
-          <button>
-            <div>
-              H<span>3</span>
-            </div>
-          </button>
-          <button>
-            <div>
-              H<span>4</span>
-            </div>
-          </button>
+        <div className="input-wrapper toolbar">
+          {Array(4)
+            .fill('')
+            .map((row, index) => {
+              const headingNum = index + 1;
+              return (
+                <button key={index} onClick={() => handleHeading(headingNum)}>
+                  <div>
+                    H<span>{index + 1}</span>
+                  </div>
+                </button>
+              );
+            })}
           <div className="division" />
           <button>B</button>
           <button>I</button>
         </div>
-        <textarea className="content-area" onChange={handleTextArea} />
+        <textarea
+          ref={textAreaRef}
+          value={content}
+          className="content-area"
+          onKeyDown={handleAreaKeyDown}
+          onChange={handleTextArea}
+          onClick={handleAreaClick}
+        />
       </div>
       <div className="preview-wrapper">
         <ReactMarkdown children={content} remarkPlugins={[remarkGfm]} />

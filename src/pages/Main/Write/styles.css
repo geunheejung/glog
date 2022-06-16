@@ -1,18 +1,16 @@
 .write-page {
   display: flex;
+  height: 80vh;
 }
 
 .write-wrapper, .preview-wrapper {
   flex: 1 1 0;
-  /* height: 100vh; */
 }
 
 .write-wrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 2rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding: 2rem 3rem 0rem;
 }
 
 .title-input input {
@@ -49,12 +47,19 @@
   color: var(--text1);
 }
 
-.style-btn-wrapper {
+.toolbar {
+  top: 0px;
   display: flex;
+  -webkit-box-align: center;
   align-items: center;
+  background: var(--bg-page2);
+  transition: all 0.125s ease-in 0s;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  width: auto;
 }
 
-.style-btn-wrapper button {
+.toolbar button {
   width: 3rem;
   height: 3rem;
   display: flex;
@@ -64,7 +69,6 @@
   justify-content: center;
   font-size: 1.75rem;
   color: var(--text3);
-  cursor: pointer;
   flex-shrink: 0;
   background: none;
   outline: none;
@@ -73,21 +77,28 @@
   font-size: 1rem;
   font-weight: bold;
   font-family: serif;
+  cursor: pointer;
 }
 
-.style-btn-wrapper span {
+.toolbar button:hover {
+  color: var(--text1);
+  background: var(--bg-element2);
+}
+
+.toolbar span {
   font-size: 0.75rem;
 }
 
 .content-area {
   border: none;
+  height: 100%;
+  resize: none;
 }
 
 .division {
   width: 1px;
   height: 1.25rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin: 0 0.5rem;
   background: var(--border3);
 }
 
