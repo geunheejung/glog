@@ -1,0 +1,25 @@
+.tooltip {
+  position: relative;
+  display: block;
+  width: 100%;
+  color: var(--text2);
+  transition: all 0.125s ease-in 0s;
+}
+
+.tooltip .inside { 
+  position: absolute;
+  padding: 0.5rem;
+  width: 100%;
+  font-size: 0.8rem;
+  line-height: 1.3rem;
+  background: var(--text2);
+  color: #fff;
+  opacity: 0;
+  transition: all 0.125s ease-in 0s;
+  transform: translateY(-1.5rem);
+}
+
+.tooltip .inside.on {
+  transform: translateY(0rem);
+  opacity: 1;
+}

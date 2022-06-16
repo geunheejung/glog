@@ -113,29 +113,3 @@
   margin-bottom: 0.75rem;
   animation: 0.125s ease-in-out 0s 1 normal forwards running lnHDaM;
 }
-
-.tooltip {
-  position: relative;
-  display: block;
-  width: 100%;
-  color: var(--text2);
-  transition: all 0.125s ease-in 0s;
-}
-
-.inside { 
-  position: absolute;
-  opacity: 0;
-  width: 100%;
-  transition: all 0.125s ease-in 0s;
-  transform: translateY(-1.5rem);
-  font-size: 0.8rem;
-  padding: 0.5rem;
-  line-height: 1.3rem;
-  background: var(--text2);
-  color: #fff;
-}
-
-.inside.on {
-  transform: translateY(0rem);
-  opacity: 1;
-}

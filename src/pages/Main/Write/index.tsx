@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import useInput from 'hooks/useInput';
 import './styles.css';
+import Tooltip from 'components/Tooltip';
 
 const Write = () => {
   const [title, , changeTitle] = useInput();
@@ -96,12 +97,10 @@ const Write = () => {
             onFocus={toggleInfoModal}
             onBlur={toggleInfoModal}
           />
-          <div className="tooltip">
-            <div className={`inside ${isOpen ? 'on' : ''}`}>
-              쉼표 혹은 엔터를 입력하여 태그를 등록할 수 있습니다. <br />
-              등록된 태그를 클릭하면 삭제됩니다.
-            </div>
-          </div>
+          <Tooltip isOpen={isOpen}>
+            쉼표 혹은 엔터를 입력하여 태그를 등록할 수 있습니다. <br />
+            등록된 태그를 클릭하면 삭제됩니다.
+          </Tooltip>
         </div>
 
         <div className="input-wrapper style-btn-wrapper">
