@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import useInput from 'hooks/useInput';
 import './styles.css';
 import Tooltip from 'components/Tooltip';
+import Tag from 'components/Tag';
 
 const Write = () => {
   const [title, , changeTitle] = useInput();
@@ -45,20 +46,20 @@ const Write = () => {
     (e: ChangeEvent<HTMLInputElement>) => {
       setTag(e.target.value.replace(',', ''));
     },
-    [tag, isOpen]
+    [tag, tagList]
   );
 
   const handleTagKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       const { code } = e;
       if (code === 'Enter' || code === 'Comma') {
-        // 현재까지 입력된 tag를 배열에 넣은 다음
-        // tag 를 초기화한다.
-        setTagList([...tagList, tag]);
+        if (!tagList.some(_tag => _tag === tag)) {
+          setTagList([...tagList, tag]);
+        }
         setTag('');
       }
     },
-    [tagList, tag, isOpen]
+    [tag, tagList]
   );
 
   const handleTag = useCallback(
@@ -80,13 +81,12 @@ const Write = () => {
         </div>
         <div className="input-wrapper tag-wrapper">
           {tagList.map((tag, index) => (
-            <div
+            <Tag
               key={`${tag}${index}`}
-              onClick={() => handleTag(index)}
-              className="tag-item"
-            >
-              {tag}
-            </div>
+              tag={tag}
+              index={index}
+              onTag={handleTag}
+            />
           ))}
           <input
             type="text"
