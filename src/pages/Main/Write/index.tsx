@@ -24,7 +24,7 @@ const Write = () => {
     useState(`A paragraph with *emphasis* and **strong importance**.
 
   > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-  
+  배열로 관리하고 클릭할 때 마다 해당 ㅈ
   * Lists
   * [ ] todo
   * [x] done
@@ -82,21 +82,26 @@ const Write = () => {
 
   const handleHeading = useCallback(
     (headingNum: number) => {
-      // headingNum 만큼 # 추가해서 content에 추가하기.
       const headingCount = Array(headingNum).fill('#').join('');
 
       const { current } = textAreaRef;
 
+      if (!current) return;
+      const { selectionStart } = current;
       // 1. cursor 위치를 인위적으로 바꾸지 않는 이상 cursor 위치 유지하기.
-      const currentLine =
-        content.lastIndexOf('\n', areaCursor || current?.selectionStart) + 1;
+      const cursor =
+        content[selectionStart + 1] === '\n'
+          ? selectionStart
+          : selectionStart + 1;
+      const currentLine = content.lastIndexOf('\n', cursor) + 1;
 
       const pre = content.slice(0, currentLine);
       const suf = content.slice(currentLine, content.length);
+      debugger;
 
       setContent(`${pre}${headingCount} ${suf.replaceAll(/^(#* )/g, '')}`);
     },
-    [areaCursor, textAreaRef]
+    [content, areaCursor, textAreaRef]
   );
 
   const handleAreaClick = useCallback(() => {
